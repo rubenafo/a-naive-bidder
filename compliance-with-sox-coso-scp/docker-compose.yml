@@ -1,0 +1,16 @@
+services:
+  compliance:
+    build:
+      context: .
+      args:
+        DUCKDB_VERSION: "1.5.5"
+        # Defaults to downloading the CLI from the official GitHub release.
+        # Where TLS is intercepted, point this at an image that already has
+        # it: DUCKDB_IMAGE=datacatering/duckdb:v1.5.5 docker compose build
+        DUCKDB_IMAGE: "${DUCKDB_IMAGE:-debian:12-slim}"
+    environment:
+      TRADES: "${TRADES:-5000000}"
+      OUT: "/work/out"
+    volumes:
+      - ./out:/work/out
+    command: ["scale"]
